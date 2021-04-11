@@ -13,7 +13,8 @@ public class ConversationScene : MonoBehaviour
         if (btn == null) Debug.Log(name + "требует наличие кнопки для скрипта");
         btn.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(Scene, LoadSceneMode.Single);
+            var scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(Scene, LoadSceneMode.Additive);
         });
     }
 }
