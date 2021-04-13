@@ -22,7 +22,7 @@ public class Window : MonoBehaviour
     /// <param name="path">путь до файла без расширения</param>
     public void StartPlay(string path)
     {
-        var jsonFile = Resources.Load(path).ToString();
+        var jsonFile = Resources.Load("Jsons\\" + path).ToString();
         var info = JSON.Parse(jsonFile);
         windows = info["windows"];
     }
@@ -57,7 +57,7 @@ public class Window : MonoBehaviour
             .First();
     }
 
-    public JSONNode GetValue(string key)
+    public string GetValue(string key)
     {
         var window = windows[curent]["window_" + curent];
         var data = window[key];
