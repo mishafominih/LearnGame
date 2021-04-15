@@ -25,6 +25,7 @@ public class OneRightAnswerManager : MonoBehaviour
         var images = Variants.Select(x => x.transform.parent.GetComponent<Image>()).ToList();
         images[answer - 1].color = Color.red;
         images[rightAnswer - 1].color = Color.green;
+        Window.Instance.RegisterResult(answer == rightAnswer);
         StartCoroutine(exit());
     }
 

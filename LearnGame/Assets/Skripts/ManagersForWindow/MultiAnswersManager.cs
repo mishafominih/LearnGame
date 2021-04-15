@@ -40,6 +40,8 @@ public class MultiAnswersManager : MonoBehaviour
             .Where(x => images[x - 1].color != Color.green)
             .ToList()
             .ForEach(x => images[x - 1].color = Color.red);
+        var sucess = images.Where(x => x.color == Color.red).Count() == 0;
+        Window.Instance.RegisterResult(sucess);
         StartCoroutine(exit());
     }
 

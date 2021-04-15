@@ -27,6 +27,7 @@ public class SliderManager : MonoBehaviour
 
     public void Result(bool isRight)
     {
+        Window.Instance.RegisterResult(result == isRight);
         if (result == isRight) Massege.text = rightMassage;
         else Massege.text = wrongMassage;
         Background.gameObject.SetActive(false);

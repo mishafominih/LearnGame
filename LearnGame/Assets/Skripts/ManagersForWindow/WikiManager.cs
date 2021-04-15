@@ -27,6 +27,7 @@ public class WikiManager : MonoBehaviour
     {
         if(str == result)
         {
+            Window.Instance.RegisterResult(true);
             Question.text = "Правильно!";
             StartCoroutine(exit());
         }

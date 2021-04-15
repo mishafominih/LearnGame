@@ -8,9 +8,11 @@ public class Window : MonoBehaviour
 {
     public static Window Instance;
 
-    private JSONNode windows;
-    private int curent = -1;
-    private bool oneStep = true;
+    protected JSONNode windows;
+    protected int curent = -1;
+    protected bool oneStep = true;
+    protected int result = 0;
+    private int count;
     private void Awake()
     {
         Instance = this;
@@ -32,6 +34,7 @@ public class Window : MonoBehaviour
         if (isActiveWindow()) oneStep = true;
         if (windows != null && !isActiveWindow() && oneStep)
         {
+            count = windows.Count;
             curent += 1;
             if (curent < windows.Count)
             {
@@ -49,7 +52,7 @@ public class Window : MonoBehaviour
         }
     }
 
-    private static string RemoveQuote(JSONNode value)
+    protected static string RemoveQuote(JSONNode value)
     {
         return value
             .ToString()
@@ -64,7 +67,7 @@ public class Window : MonoBehaviour
         return RemoveQuote(data);
     }
 
-    private bool isActiveWindow()
+    protected bool isActiveWindow()
     {
         return transform.childCount != 0;
     }
@@ -73,5 +76,10 @@ public class Window : MonoBehaviour
     {
         if (transform.childCount != 0)
             Destroy(transform.GetChild(0).gameObject);
+    }
+
+    public void RegisterResult(bool res)
+    {
+        if (res == true) result += 1;
     }
 }

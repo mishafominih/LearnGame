@@ -58,6 +58,8 @@ public class MoveItemsManager : MonoBehaviour
                 }
             }
             Items.ForEach(x => x.GetComponent<ItemMove>().enabled = false);
+            var sucess = Items.Where(x => x.GetComponent<Image>().color == Color.red).Count() == 0;
+            Window.Instance.RegisterResult(sucess);
             StartCoroutine(exit());
         }
     }
