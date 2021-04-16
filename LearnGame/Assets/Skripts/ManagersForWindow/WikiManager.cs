@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WikiManager : MonoBehaviour
+public class WikiManager : Manager
 {
     public Text Question;
     public Text Link;
@@ -11,6 +11,18 @@ public class WikiManager : MonoBehaviour
 
     private string result;
     void Start()
+    {
+        try
+        {
+            GetData();
+        }
+        catch
+        {
+
+        }
+    }
+
+    public new void GetData()
     {
         var question = Window.Instance.GetValue("question");
         var link = Window.Instance.GetValue("link");
@@ -25,6 +37,7 @@ public class WikiManager : MonoBehaviour
 
     public void CheckResult(string str)
     {
+        if (!Active) return;
         if(str == result)
         {
             Window.Instance.RegisterResult(true);

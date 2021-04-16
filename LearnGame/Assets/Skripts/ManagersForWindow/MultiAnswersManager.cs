@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MultiAnswersManager : MonoBehaviour
+public class MultiAnswersManager : Manager
 {
     public Text Counter;
     public Text Question;
@@ -14,6 +14,18 @@ public class MultiAnswersManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        try
+        {
+            GetData();
+        }
+        catch
+        {
+
+        }
+    }
+
+    public new void GetData()
+    {
         Question.text = Window.Instance.GetValue("question");
         for (int i = 0; i < Variants.Count; i++)
             Variants[i].text = Window.Instance.GetValue("variant_" + (i + 1));
@@ -22,11 +34,11 @@ public class MultiAnswersManager : MonoBehaviour
             .Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries)
             .Select(x => int.Parse(x))
             .ToList();
-            
     }
 
     public void RegisterAnswer()
     {
+        if (!Active) return;
         var images = Variants.Select(x => x.transform.parent.GetComponent<Image>()).ToList();
         rightAnswers
             .Where(x => images[x - 1].color == Color.yellow)

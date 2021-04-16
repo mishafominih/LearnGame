@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 2eb203f00d561234ab4c9660d2409414
+  - enabled: 1
     path: Assets/Scenes/Monopoly.unity
     guid: 9096b6ce68b580445ae685c3e6239a35
   m_configObjects: {}

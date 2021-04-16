@@ -6,11 +6,14 @@ using Photon.Realtime;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+    public static Launcher Instance;
     #region Private Serializable Fields
 
     [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
     [SerializeField]
     private byte maxPlayersPerRoom = 4;
+    [SerializeField]
+    private string levelName = "Lobby";
 
     #endregion
 
@@ -18,56 +21,70 @@ public class Launcher : MonoBehaviourPunCallbacks
     #region Private Fields
 
     private string gameVersion = "1";
-    private string levelName = "Monopoly";
     private bool isConnecting;
-
+    private string findNameGame ;
+    private string createNameGame;
     #endregion
 
+    public void SetFindNameGame(string name)
+    {
+        findNameGame = name;
+    }
+
+    public void SetCreateNameGame(string name)
+    {
+        createNameGame = name;
+    }
 
     void Awake()
     {
+        Instance = this;
         // #Critical
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
+    private void Start()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            isConnecting = PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
+        }
+    }
+
     public void Connect()
     {
-        // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
         if (PhotonNetwork.IsConnected)
         {
-            // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
-            PhotonNetwork.JoinRandomRoom();
+            if (string.IsNullOrEmpty(findNameGame))
+                PhotonNetwork.JoinRandomRoom();
+            else
+                PhotonNetwork.JoinRoom(findNameGame);
         }
         else
         {
-            // #Critical, we must first and foremost connect to Photon Online Server.
             isConnecting = PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = gameVersion;
         }
     }
     
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-        if (isConnecting)
-        {
-            PhotonNetwork.JoinRandomRoom();
-            isConnecting = false;
-        }
-    }
-
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
     }
 
-    public override void OnJoinRandomFailed(short returnCode, string message)
+    public void CreateRoom()
     {
-        Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
-
-        // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.CreateRoom(createNameGame, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+        }
+        else
+        {
+            isConnecting = PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
+        }
     }
 
     public override void OnJoinedRoom()
