@@ -20,6 +20,7 @@ public class StartGame : MonoBehaviour
             {
                 PhotonNetwork.LoadLevel("Monopoly");
                 PhotonNetwork.CurrentRoom.IsOpen = false;
+                GameManager.Instance.StartGame();
             }
         });
     }

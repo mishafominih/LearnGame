@@ -46,11 +46,17 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
             var percent = countItems / (float)allItems;
             if(percent >= 0.8f)
             {
-                Win.gameObject.SetActive(true);
-                Win.text = "Выиграл " + player.GetName() + " !!!";
-                Cube.SetActive(false);
+                GetComponent<PhotonView>().RPC("WinGame", RpcTarget.All, player.GetName());
             }
         }
+    }
+
+    [PunRPC]
+    private void WinGame(string namePlayer)
+    {
+        Win.gameObject.SetActive(true);
+        Win.text = "Выиграл " + namePlayer + " !!!";
+        Cube.SetActive(false);
     }
 
     private List<MonopolyPlayer> getPlayers()
@@ -72,6 +78,26 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
         return allPlayers
             .Take(countPlayer)
             .ToList();
+    }
+
+    public void DeletePlayer(string PlayerName)
+    {
+        var player = players.Where(x => x.GetName() == PlayerName).First();
+        players.Remove(player);
+        foreach(var item in items)
+        {
+            if (item.GetColor() == player.GetColor())
+                item.GetComponent<Image>().color = item.StartColor;
+        }
+        currentStepPlayer.size -= 1;
+        if(players.Count == 1)
+        {
+            WinGame(player.GetName());
+        }
+        else
+        {
+            player.gameObject.SetActive(false);
+        }
     }
 
     public void MoveStep(int count)
@@ -187,7 +213,7 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
     {
         public int currentStep { get; set; }
 
-        private int size;
+        public int size { get; set; }
         public Step(int size)
         {
             this.size = size;

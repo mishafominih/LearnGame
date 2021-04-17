@@ -17,9 +17,21 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     
     public List<string> PlayersNames = new List<string>();
+    private bool game = false;
     private void Awake()
     {
         Instance = this;   
+    }
+
+    public void StartGame()
+    {
+        GetComponent<PhotonView>().RPC("SetGameOnTrue", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void SetGameOnTrue()
+    {
+        game = true;
     }
 
     private void Start()
@@ -54,6 +66,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnPlayerLeftRoom(Player other)
     {
+        if (game && other.NickName != PhotonNetwork.NickName)
+        {
+            Game.Instance.DeletePlayer(other.NickName);
+        }
         PlayersNames.Remove(other.NickName);
         Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
         if (PhotonNetwork.IsMasterClient)
