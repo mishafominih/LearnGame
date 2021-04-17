@@ -11,16 +11,20 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
     public Text Win;
     public GameObject Cube;
     public static Game Instance;
+    [NonSerialized]
+    public bool isFirst = false;
 
     private List<MonopolyPlayer> players;
     private List<MonopolyItem> items;
     private Step currentStepPlayer;
     private Dictionary<MonopolyPlayer, Step> StepsInfo = new Dictionary<MonopolyPlayer, Step>();
 
+
     private void Awake()
     {
         Instance = this;
     }
+
 
     void Start()
     {
@@ -129,6 +133,7 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RegisterAnswer(string namePlayer)
     {//вызывается только при правильном ответе
+        if (!isFirst) return;
         var player = players.Where(x => x.GetName() == namePlayer).First();
         var indexItem = StepsInfo[player].currentStep;
         var item = items[indexItem];

@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnPlayerEnteredRoom(Player other)
     {
+        //if(PlayersNames.Contains(other.NickName)) other.
         PlayersNames.Add(other.NickName);
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
         if (PhotonNetwork.IsMasterClient)

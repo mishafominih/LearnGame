@@ -36,6 +36,7 @@ public class MonopolyWindow : Window
         this.curent = curent;
         namesPlayers = strNamesPlayers.Split(new char[] { '+' }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
 
+        if (strNamesPlayers.Contains(PhotonNetwork.NickName)) Game.Instance.isFirst = true;
 
         var window = windows[curent]["window_" + curent];
         var type = RemoveQuote(window["type"]);
@@ -60,6 +61,12 @@ public class MonopolyWindow : Window
         
     }
 
+    [PunRPC]
+    private void NotFirst()
+    {
+        Game.Instance.isFirst = false;
+    }
+
     public override void RegisterResult(bool res)
     {
         if (res == true)
@@ -67,6 +74,7 @@ public class MonopolyWindow : Window
             var name = PhotonNetwork.NickName;
             var player = namesPlayers.Where(x => x == name).First();
             Game.Instance.RegisterAnswer(player);
+            GetComponent<PhotonView>().RPC("NotFirst", RpcTarget.All);
         }
     }
 
