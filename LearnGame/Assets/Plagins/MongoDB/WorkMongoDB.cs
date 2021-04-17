@@ -58,4 +58,35 @@ public class WorkMogoDb : MonoBehaviour
             gridFS.DownloadToStreamByNameAsync(nameImage, file);
         }
     }
+
+    [System.Obsolete]
+    public static bool SigIn(string name, string password)
+    {
+        var players = database.GetCollection<BsonDocument>("players");
+        var filter = new BsonDocument()
+            {
+                {"name", name },
+                {"password", password}
+            };
+        return players.Find(filter).Count() == 1 ? true : false;
+    }
+
+    [System.Obsolete]
+    public static bool CheckIn(string name, string password)
+    {
+        var players = database.GetCollection<BsonDocument>("players");
+        var filter = new BsonDocument()
+            {
+                {"name",name}
+            };
+        if (players.Find(filter).Count() != 0)
+            return false;
+        var newPlayer = new BsonDocument()
+            {
+                {"name", name },
+                {"password", password}
+            };
+        players.InsertOneAsync(newPlayer);
+        return true;
+    }
 }
