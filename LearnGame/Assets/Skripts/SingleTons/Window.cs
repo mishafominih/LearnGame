@@ -28,6 +28,7 @@ public class Window : MonoBehaviourPunCallbacks
         var jsonFile = Resources.Load("Jsons\\" + path).ToString();
         var info = JSON.Parse(jsonFile);
         windows = info["windows"];
+        
     }
 
     private void Update()
