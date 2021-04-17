@@ -305,8 +305,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39.7, y: 99.3}
-  m_SizeDelta: {x: 434.91, y: 79.408844}
+  m_AnchoredPosition: {x: 63, y: 99.3}
+  m_SizeDelta: {x: 603.52625, y: 79.408844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7054525960102954173
 CanvasRenderer:
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.19344072, g: 0.36325103, b: 0.6509434, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -348,7 +348,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: "\u0432\u043E\u043F\u0440\u043E\u0441"
 --- !u!1 &1914827312136940030
 GameObject:
   m_ObjectHideFlags: 0

@@ -77,6 +77,8 @@ public class Window : MonoBehaviourPunCallbacks
     {
         if (transform.childCount != 0)
             Destroy(transform.GetChild(0).gameObject);
+        windows = null;
+        curent = -1;
     }
 
     public virtual void RegisterResult(bool res)
