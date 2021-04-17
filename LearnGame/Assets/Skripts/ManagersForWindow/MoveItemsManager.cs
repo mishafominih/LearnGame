@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveItemsManager : MonoBehaviour
+public class MoveItemsManager : Manager
 {
     public Text Counter;
     public Text Question;
@@ -19,10 +19,22 @@ public class MoveItemsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        try
+        {
+            GetData();
+        }
+        catch
+        {
+
+        }
+    }
+
+    public new void GetData()
+    {
         Question.text = Window.Instance.GetValue("question");
         Counter.text = Window.Instance.GetValue("number");
         rightAnswer = Window.Instance.GetValue("rightAnswer");
-        for(int i = 0; i < Items.Count; i++)
+        for (int i = 0; i < Items.Count; i++)
             FillData(i);
 
         startParent = Items[0].transform.parent;
@@ -37,6 +49,7 @@ public class MoveItemsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!Active) return;
         var countMoveItems = Items.Where(x => x.transform.parent == startParent).Count();
         if(countMoveItems == 0)
         {

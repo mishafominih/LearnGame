@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
 using System.Linq;
+using Photon.Pun;
 
-public class Window : MonoBehaviour
+public class Window : MonoBehaviourPunCallbacks
 {
     public static Window Instance;
 
@@ -72,13 +73,13 @@ public class Window : MonoBehaviour
         return transform.childCount != 0;
     }
 
-    public void CloseWindow()
+    public virtual void CloseWindow()
     {
         if (transform.childCount != 0)
             Destroy(transform.GetChild(0).gameObject);
     }
 
-    public void RegisterResult(bool res)
+    public virtual void RegisterResult(bool res)
     {
         if (res == true) result += 1;
     }

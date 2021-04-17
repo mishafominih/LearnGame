@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SliderManager : MonoBehaviour
+public class SliderManager : Manager
 {
     public Text Question;
     public Image Image;
@@ -14,6 +14,18 @@ public class SliderManager : MonoBehaviour
     private string wrongMassage;
     private string rightMassage;
     void Start()
+    {
+        try
+        {
+            GetData();
+        }
+        catch
+        {
+
+        }
+    }
+
+    public new void GetData()
     {
         var question = Window.Instance.GetValue("question");
         var imagePath = Window.Instance.GetValue("image");
@@ -27,6 +39,7 @@ public class SliderManager : MonoBehaviour
 
     public void Result(bool isRight)
     {
+        if (!Active) return;
         Window.Instance.RegisterResult(result == isRight);
         if (result == isRight) Massege.text = rightMassage;
         else Massege.text = wrongMassage;
