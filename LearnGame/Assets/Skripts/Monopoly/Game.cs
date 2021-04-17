@@ -225,5 +225,11 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
             currentStep += 1;
             if (currentStep == size) currentStep = 0;
         }
+
+        public void DecrementSize()
+        {
+            size -= 1;
+            if (currentStep == size) currentStep = 0;
+        }
     }
 }
