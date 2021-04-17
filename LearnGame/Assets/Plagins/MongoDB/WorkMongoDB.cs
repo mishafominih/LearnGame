@@ -89,4 +89,48 @@ public class WorkMogoDb : MonoBehaviour
         players.InsertOneAsync(newPlayer);
         return true;
     }
+    public static Dictionary<string, int> GetPlayerData(string name, Dictionary<string, int> data)
+    {
+        var dataPlayers = database.GetCollection<BsonDocument>("players_data");
+        var filter = new BsonDocument()
+            {
+                {"name",name}
+            };
+        var result = new Dictionary<string, int>();
+        var allPlayerData = dataPlayers.Find(filter).FirstOrDefault();
+        foreach (var key in data.Keys)
+        {
+            result[key] = (int)allPlayerData[key];
+        }
+        return result;
+    }
+
+    public static void SetPlayerData(string name, Dictionary<string, int> data)
+    {
+        var dataPlayers = database.GetCollection<BsonDocument>("players_data");
+        var filter = new BsonDocument()
+            {
+                {"name",name}
+            };
+        var allPlayerData = dataPlayers.Find(filter).FirstOrDefault();
+        BsonDocument updata = UpdataPlayerData(name, data);
+        if (allPlayerData is null)
+        {
+            dataPlayers.InsertOne(updata);
+        }
+        else
+        {
+            dataPlayers.FindOneAndUpdate(filter, updata);
+        }
+    }
+
+    private static BsonDocument UpdataPlayerData(string name, Dictionary<string, int> data)
+    {
+        var result = new BsonDocument()
+            {
+                {"name", name }
+            };
+        result.Add(data);
+        return result;
+    }
 }
