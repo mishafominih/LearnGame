@@ -16,7 +16,7 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
 
     private List<MonopolyPlayer> players;
     private List<MonopolyItem> items;
-    private Step currentStepPlayer;
+    public Step currentStepPlayer;
     private Dictionary<MonopolyPlayer, Step> StepsInfo = new Dictionary<MonopolyPlayer, Step>();
 
 
@@ -92,19 +92,15 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
         currentStepPlayer.size -= 1;
         if(players.Count == 1)
         {
-            WinGame(player.GetName());
+            WinGame(players[0].GetName());
         }
-        else
-        {
-            player.gameObject.SetActive(false);
-        }
+        player.gameObject.SetActive(false);
     }
 
     public void MoveStep(int count)
     {
         var player = players[currentStepPlayer.currentStep];
         StartCoroutine(movePlayer(player, count));
-        currentStepPlayer.NextStep();
     }
 
     private IEnumerator movePlayer(MonopolyPlayer player, int countStep)
@@ -121,6 +117,7 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
         var onStart = items[currentStep.currentStep].GetComponent<MonopolyItem>().OnStart;
         if (onStart)
         {
+            currentStepPlayer.NextStep();
             currentStep.currentStep = 0;
             SetStep(player, currentStep);
         }
@@ -133,7 +130,12 @@ public class Game : MonoBehaviourPunCallbacks, IPunObservable
             var itemColor = item.GetColor();
             var PlayerColor = player.GetColor();
             var playersForAnswer = new List<string>() { player.GetName() };
-            if (itemColor == PlayerColor) yield break;
+            if (itemColor == PlayerColor)
+            {
+                currentStepPlayer.NextStep();
+                yield break;
+            }
+
             if (itemColor != item.StartColor)
             {
                 var otherPlayer = players.Where(x => x.GetColor() == itemColor).First();

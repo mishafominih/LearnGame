@@ -11,6 +11,9 @@ public class ButtonCube : MonoBehaviourPun, IPunObservable
     [SerializeField]
     private List<State> states;
 
+    [NonSerialized]
+    public bool isActive = true;
+
     private State currentState;
     private Image image;
 
@@ -33,8 +36,9 @@ public class ButtonCube : MonoBehaviourPun, IPunObservable
         currentState = states[0];
         GetComponent<Button>().onClick.AddListener(() =>
         {
-            if (Game.Instance.IsMyStep(PhotonNetwork.NickName))
+            if (Game.Instance.IsMyStep(PhotonNetwork.NickName) && isActive)
             {
+                isActive = false;
                 Game.Instance.TransferOnCurrentPlayer();
                 StartCoroutine(StartCast());
             }

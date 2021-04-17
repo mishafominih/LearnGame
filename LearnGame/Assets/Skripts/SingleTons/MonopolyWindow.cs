@@ -52,6 +52,7 @@ public class MonopolyWindow : Window
     [PunRPC]
     private void DestroyWindow()
     {
+        Game.Instance.Cube.GetComponent<ButtonCube>().isActive = true;
         if (transform.childCount != 0)
             Destroy(transform.GetChild(0).gameObject);
     }
@@ -80,8 +81,9 @@ public class MonopolyWindow : Window
 
     public override void CloseWindow()
     {
-        if(namesPlayers[0] == PhotonNetwork.NickName)
+        if (namesPlayers[0] == PhotonNetwork.NickName)
         {
+            Game.Instance.currentStepPlayer.NextStep();
             GetComponent<PhotonView>().RPC("DestroyWindow", RpcTarget.Others);
         }
         DestroyWindow();

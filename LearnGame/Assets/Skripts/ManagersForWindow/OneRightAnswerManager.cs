@@ -39,6 +39,7 @@ public class OneRightAnswerManager : Manager
         images[rightAnswer - 1].color = Color.green;
         Window.Instance.RegisterResult(answer == rightAnswer);
         StartCoroutine(exit());
+        Active = false;
     }
 
     private IEnumerator exit()
